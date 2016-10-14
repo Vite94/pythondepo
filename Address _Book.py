@@ -1,15 +1,13 @@
 #Address Book creater
 #Ask user for whether they are looking up a contact or if they're adding a new contact
-choice = input("Enter 'looking for a contact' to search for a contact or Enter 'New contact' to add a new contact\n").lower()
+import time
+import sys
+choice = input("Enter 'looking for a contact' to search for a contact or Enter 'New contact' to add a new contact. Enter 'Exit' to exit.\n").lower()
 while choice not in ["looking for a contact", "new contact","exit"]:
     print("Input invalid, please enter a correct input.")
-    choice = input("Enter 'looking for a contact' to search for a contact or Enter 'New contact' to add a new contact\n").lower()
+    choice = input("Enter 'looking for a contact' to search for a contact or Enter 'New contact' to add a new contact.  Enter 'Exit' to exit.\n").lower()
 while choice in ["looking for a contact", "new contact","exit"]:
     #Create and open a text file named Contacts
-    if choice == "exit":
-        print("Thank you for using this program made by Vithushan Elangovan. Goodbye!")
-        contact.close()
-        break
     try:
         contact = open("Contacts.txt", "r+")
         contact.close()
@@ -17,6 +15,32 @@ while choice in ["looking for a contact", "new contact","exit"]:
         contact = open("Contacts.txt", "w")
         contact.close()
     finally:
+        if choice == "exit":
+            choice2 = input("Are you sure? This will exit the program\n").lower()
+            while choice2 not in ["yes", "y", "no", "n"]:
+                print("Invalid input")
+                choice2 = input("Are you sure? This will exit the program (Enter yes or no)\n").lower()
+            if choice2 in ["yes", "y"]:
+                try:        
+                    print("Thank you for using this program made by Vithushan Elangovan. Goodbye!")
+                    print("Exiting program in 3 seconds...Press CTRL+C to interrupt exit")
+                    time.sleep(1)
+                    print("3...Press CTRL+C to interrupt exit")
+                    time.sleep(1)
+                    print("2...Press CTRL+C to interrupt exit")
+                    time.sleep(1)
+                    print("1...Press CTRL+C to interrupt exit")
+                    time.sleep(1)
+                    print("Exit complete")
+                    contact.close()
+                    sys.exit()
+                    quit()
+                except KeyboardInterrupt:
+                    print("Keyboard interrupt received. Returning to main menu.")
+                    time.sleep(2)
+                    choice = input("Enter 'looking for a contact' to search for a contact or Enter 'New contact' to add a new contact. Enter 'Exit' twice to exit program.\n").lower()
+            elif choice2 in ["no", "n"]:
+                choice = input("Enter 'looking for a contact' to search for a contact or Enter 'New contact' to add a new contact. Enter 'Exit' twice to exit program.\n").lower()
         if choice == "new contact":
             contact = open("Contacts.txt", "a")
             fname = input("Please enter the first name:\n")
@@ -30,7 +54,7 @@ while choice in ["looking for a contact", "new contact","exit"]:
             contact.write("\nName: " + name)
             #age
             age = input("Please enter the age of " + fname + ":\n")
-            contact.write("\tAge: " + age)
+            contact.write("\t  Age: " + age)
             #date of birth
             d_o_b = input("Please enter the date of birth of " + fname + " in the format ddmmyyyy:\n")
             #to ensure date of birth is in correct format
@@ -49,7 +73,7 @@ while choice in ["looking for a contact", "new contact","exit"]:
             contact.write("\nHome Phone: " + hphone)
             #mobile phone
             mphone = input("Please enter the mobile phone number of " + fname + ":\n")
-            contact.write("\t\tMobile Phone: " + mphone)
+            contact.write("\t  Mobile Phone: " + mphone)
             #address
             h_no = input("Please enter the house number and/or house name of " + fname + ":\n")
             street = input("Please enter the street of " + fname + ":\n")
@@ -64,46 +88,18 @@ while choice in ["looking for a contact", "new contact","exit"]:
             choice = input("Would you like to add a new contact? or would you like to look for a contact? Type in 'exit' to close the document\n").lower()
         elif choice == "looking for a contact":
             contact = open("Contacts.txt", "r")
-            firname = input("Please enter the first name of the contact you are looking for (Case Sensitive):\n")
-            lstname = input("Please enter the last name of the contact you are looking for (Case Sensitive):\n")
-            '''choice2 = input("Are you also looking to edit said contact? Please enter 'yes' or 'no'\n").lower() 
-            while choice2 not in ["yes","y","no","n"]:
-                print("Invalid entry, please enter the correct inputs.")
-                choice2 = input("Are you also looking to edit said contact? Please enter 'yes' or 'no'\n").lower()
-            if choice2 in ["no","n"]:'''
+            firname = input("Please enter the first name of the contact you are looking for:\n")
+            lstname = input("Please enter the last name of the contact you are looking for:\n")
             searchlines = contact.readlines()
+            found = False
             for i,line in enumerate(searchlines):
-                if firname in searchlines[i] and lstname in searchlines[i]:
+                if (firname[0].upper()+firname[1:].lower()) in searchlines[i] and (lstname[0].upper()+lstname[1:].lower()) in searchlines[i]:
                     for l in searchlines[i:i+10]:
                         print(l),
                     print("")
-            contact.close()
-            choice = input("Please type in 'New contact' to add a contact or 'looking for a contact' to search your address book (Enter exit to exit the program):\n").lower()
-            '''elif choice2 in ["yes","y"]:
-                contact = open("Contacts.txt", "r+")
-                choice3 = input("What would you like to replace?\n")
-                choice4 = input("What would you like to input into " + choice3 + ":\n")
-                searchlines = contact.readlines()
-                for i, line in enumerate(searchlines):
-                    if fname in line and lname in line:
-                        for l in searchlines[i:i+10]:
-                            searchlines2 = searchlines.replace(choice3, choice3 + ": " + choice4)
-                            contact.write(searchlines2)
-                            print(l)
-                        print()
-                            
-                        choice = input("Please type in 'New contact' to add a contact or 'looking for a contact' to search your address book:\n").lower()
-                    else:
-                        print("Contact not found")
-                        choice = input("Please type in 'New contact' to add a contact or 'looking for a contact' to search your address book: Enter 'exit' to close the file and exit the program.\n").lower()
-                        if choice == exit:
-                            contact.close()
-                            print("Thank you for using this program made by Vithushan Elangovan. Goodbye!")
-                            break
-                        else:
-                            continue'''
-                        
-                
-                
-            
-    
+                    found = True
+                    break
+            if not found:
+                print("Contact not found")
+        contact.close()
+        choice = input("Please type in 'New contact' to add a contact or 'looking for a contact' to search your address book (Enter exit to exit the program):\n").lower()
