@@ -40,6 +40,6 @@ while choice in ["y", "yes"]:
         print("Sorry, there has been an error, please try again")
     choice = input("Continue with another set of numbers? Y/N\n").lower()
     while choice not in ["y", "n", "yes", "no"]:
-    print("Incorrect entry, please try again.")
-    choice = input("Continue with another set of numbers? Y/N\n").lower()
+        print("Incorrect entry, please try again.")
+        choice = input("Continue with another set of numbers? Y/N\n").lower()
 print("Thank you for using this program " + name[0].upper() + name[1:].lower(). + "Goodbye!")
