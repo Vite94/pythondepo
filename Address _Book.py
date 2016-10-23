@@ -1,4 +1,4 @@
-#Address Book creater
+#Address Book creator
 #Ask user for whether they are looking up a contact or if they're adding a new contact
 import time
 import sys
